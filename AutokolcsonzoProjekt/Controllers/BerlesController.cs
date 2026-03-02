@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutokolcsonzoProjekt.Data;
+using AutokolcsonzoProjekt.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AutokolcsonzoProjekt.Data;
-using AutokolcsonzoProjekt.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AutokolcsonzoProjekt.Controllers
 {
@@ -19,7 +20,7 @@ namespace AutokolcsonzoProjekt.Controllers
             _context = context;
         }
 
-
+        [AllowAnonymous]
         public async Task<IActionResult> Index(DateTime? datum, decimal? tav)
         {
             var berlesek = _context.Berlesek.Include(n => n.Auto).AsQueryable();
@@ -39,7 +40,7 @@ namespace AutokolcsonzoProjekt.Controllers
             return View(await berlesek.ToListAsync());
         }
 
-
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -58,7 +59,7 @@ namespace AutokolcsonzoProjekt.Controllers
             return View(berles);
         }
 
-        
+        [Authorize(Roles = "User,Admin")]
         public IActionResult Create()
         {
             ViewData["AutoID"] = new SelectList(_context.Autok, "ID", "Meghajtas");
@@ -68,6 +69,7 @@ namespace AutokolcsonzoProjekt.Controllers
        
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "User,Admin")]
         public async Task<IActionResult> Create([Bind("ID,AutoID,Datum,Tol,Ig,Tav")] Berles berles)
         {
             if (ModelState.IsValid)
@@ -80,7 +82,7 @@ namespace AutokolcsonzoProjekt.Controllers
             return View(berles);
         }
 
-        
+        [Authorize(Roles = "User,Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -100,6 +102,7 @@ namespace AutokolcsonzoProjekt.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "User,Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("ID,AutoID,Datum,Tol,Ig,Tav")] Berles berles)
         {
             if (id != berles.ID)
@@ -131,7 +134,7 @@ namespace AutokolcsonzoProjekt.Controllers
             return View(berles);
         }
 
-        
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -153,6 +156,7 @@ namespace AutokolcsonzoProjekt.Controllers
        
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var berles = await _context.Berlesek.FindAsync(id);

@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutokolcsonzoProjekt.Data;
+using AutokolcsonzoProjekt.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AutokolcsonzoProjekt.Data;
-using AutokolcsonzoProjekt.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AutokolcsonzoProjekt.Controllers
 {
@@ -19,7 +20,7 @@ namespace AutokolcsonzoProjekt.Controllers
             _context = context;
         }
 
-
+        [AllowAnonymous]
         public async Task<IActionResult> Index(string? rendszam, string? meghajtas)
         {
             var autok = _context.Autok.AsQueryable();
@@ -38,7 +39,7 @@ namespace AutokolcsonzoProjekt.Controllers
             return View(await autok.ToListAsync());
         }
 
-       
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -56,7 +57,7 @@ namespace AutokolcsonzoProjekt.Controllers
             return View(auto);
         }
 
-       
+        [Authorize(Roles = "User,Admin")]
         public IActionResult Create()
         {
             return View();
@@ -65,6 +66,7 @@ namespace AutokolcsonzoProjekt.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "User,Admin")]
         public async Task<IActionResult> Create([Bind("ID,Rendszam,Meghajtas,Uj")] Auto auto)
         {
             if (ModelState.IsValid)
@@ -76,7 +78,7 @@ namespace AutokolcsonzoProjekt.Controllers
             return View(auto);
         }
 
-        
+        [Authorize(Roles = "User,Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -95,6 +97,7 @@ namespace AutokolcsonzoProjekt.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "User,Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("ID,Rendszam,Meghajtas,Uj")] Auto auto)
         {
             if (id != auto.ID)
@@ -125,7 +128,7 @@ namespace AutokolcsonzoProjekt.Controllers
             return View(auto);
         }
 
-    
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -146,6 +149,7 @@ namespace AutokolcsonzoProjekt.Controllers
        
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var auto = await _context.Autok.FindAsync(id);
@@ -157,6 +161,7 @@ namespace AutokolcsonzoProjekt.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
 
         private bool AutoExists(int id)
         {

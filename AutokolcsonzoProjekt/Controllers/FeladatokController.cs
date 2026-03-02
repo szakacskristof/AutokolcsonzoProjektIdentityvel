@@ -1,10 +1,12 @@
 ﻿using AutokolcsonzoProjekt.Data;
 using AutokolcsonzoProjekt.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutokolcsonzoProjekt.Controllers
 {
+    [Authorize(Roles = "User,Admin")]
     public class FeladatokController : Controller
     {
         private readonly KolcsonzoDbContext _context;
