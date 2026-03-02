@@ -1,0 +1,51 @@
+﻿@model AutokolcsonzoProjekt.Models.Berles
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Bérlés Törlése</h1>
+
+<h3>Biztosan törölni szeretné?</h3>
+<div>
+    <h4>Berles</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Datum)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Datum)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tol)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tol)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ig)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ig)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tav)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tav)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Auto)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Auto.Meghajtas)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ID" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

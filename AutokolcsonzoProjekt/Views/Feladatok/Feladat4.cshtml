@@ -1,0 +1,32 @@
+﻿@model IEnumerable<AutokolcsonzoProjekt.ViewModels.Feladat4ViewModel>
+
+@{
+    ViewData["Title"] = "Autók összes megtett távolsága a tesztüzem alatt";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (!Model.Any())
+{
+    <p>Nincs megjeleníthető adat.</p>
+}
+else
+{
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Rendszám</th>
+                <th>Megtett távolság (km)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var auto in Model)
+            {
+                <tr>
+                    <td>@auto.Rendszam</td>
+                    <td>@auto.OsszesTav</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

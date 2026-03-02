@@ -1,0 +1,22 @@
+﻿@model dynamic
+
+@{
+    ViewData["Title"] = "Tesztüzem kezdete és vége";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Első nap</th>
+            <th>Utolsó nap</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model.ElsoNap.ToString("yyyy-MM-dd")</td>
+            <td>@Model.UtolsoNap.ToString("yyyy-MM-dd")</td>
+        </tr>
+    </tbody>
+</table>
